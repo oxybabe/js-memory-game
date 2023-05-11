@@ -70,18 +70,20 @@
   play();// the game is started
 
   function checkForMatch() {
+    // console.log(typeof flippedCards[0].dataset.name);
+    // debugger
+    console.log({flippedCards})
     let matched = flippedCards[0].dataset.name === flippedCards[1].dataset.name;
     
     if (matched) {
       console.log("Cards Match!")
-      matchedCards.push(flippedCards[0]);
-      matchedCards.push(flippedCards[1]);
-      disableCards(flippedCards[0],flippedCards[1]);
-      checkForMatch(".open").removeClass("myCardsArray").addClass("matchedCards");
+      disableCards();
+      // checkForMatch(".open").removeClass("myCardsArray").addClass("matchedCards");
+
     } else {
       console.log("No Match :( ");
       unFlipCards();
-      checkForMatch(".open").removeClass("matchedCards").addClass("myCardsArray");
+      // checkForMatch(".open").removeClass("matchedCards").addClass("myCardsArray");
     }
   };
   
@@ -94,19 +96,20 @@
     flippedCards = [];
   };
 
-  function disableCards(card1, card2){
-    card1.removeEventListener("click", flipCard);
-    card2.removeEventListener("click", flipCard); 
-
+  function disableCards(){
+     
     flippedCards.forEach(function (card) {
-      setTimeout(function () {
-        card.classList.remove("unFlipCards");
-      }, 1000);
+      card.removeEventListener("click", flipCard);
+      matchedCards.push(card);  
     });
     flippedCards = []; 
-    if(matchedCards.length === numOfTotalCardsInGame){
-      alert("You won!");
-    }
+
+    setTimeout(function() {
+      if(matchedCards.length === numOfTotalCardsInGame){
+        alert("You won!");
+      }
+    }, 1000)
+   
 
   };
 
@@ -135,6 +138,8 @@
     if (flippedCards.length === 2) {
       checkForMatch();
     }
+
+    // console.log({flippedCards})
   };
 
   function play() {
